@@ -101,9 +101,15 @@ EOF
     fi
 }
 
+mkvenvdir(){
+    mkdir -p $VENVBURRITO/$1
+}
 
 pyver=$(python -c 'import platform;print ".".join(platform.python_version().split(".")[:2])')
-mkdir -p $VENVBURRITO/{bin,libexec,lib/python$pyver/site-packages}
+mkvenvdir bin
+mkvenvdir libexec
+mkvenvdir lib/python$pyver
+mkvenvdir site-packages
 test -d $HOME/.virtualenvs || mkdir $HOME/.virtualenvs
 
 echo "Downloading virtualenv-burrito command"
