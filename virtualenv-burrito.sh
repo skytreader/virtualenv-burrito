@@ -101,8 +101,8 @@ EOF
     fi
 }
 
-
-pyver=$(python -c 'import platform;print ".".join(platform.python_version().split(".")[:2])')
+# Hard-specify python3 for the meantime
+pyver=$(python3 -c 'import platform;print(".".join(platform.python_version().split(".")[:2]))')
 mkdir -p $VENVBURRITO/{bin,libexec,lib/python$pyver/site-packages}
 test -d $HOME/.virtualenvs || mkdir $HOME/.virtualenvs
 
