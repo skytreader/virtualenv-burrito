@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 #
 #   virtualenv-burrito.py — manages the Virtualenv Burrito environment
@@ -9,7 +9,7 @@ __version__ = "2.7.1"
 import sys
 import os
 import csv
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import shutil
 import glob
 import tempfile
@@ -55,7 +55,7 @@ def get_installed_version(name):
     for pydir in get_python_lib_paths():
         for egg_path in glob.glob("%s-*.egg*" % os.path.join(pydir, name)):
             egg = os.path.basename(egg_path)
-            versions.append(map(int, egg.split('-')[1].split('.')))
+            versions.append(list(map(int, egg.split('-')[1].split('.'))))
     if versions:
         return ".".join(map(str, max(versions)))
 
@@ -66,10 +66,10 @@ def download(url, digest):
     Downloads and checks the SHA1 of the data matches the given hex digest.
     """
     name = url.split('/')[-1]
-    print "  Downloading", name, "…"
+    print("  Downloading", name, "…")
     try:
-        download_data = urllib2.urlopen(url).read()
-    except Exception, e:
+        download_data = urllib.request.urlopen(url).read()
+    except Exception as e:
         sys.stderr.write("\nERROR - Unable to download %s: %s %s\n"
                          % (url, type(e), str(e)))
         raise SystemExit(1)
@@ -77,9 +77,9 @@ def download(url, digest):
     filehash = sha1()
     filehash.update(download_data)
     if filehash.hexdigest() != digest:
-        print ("\nThe file %s didn't look like we expected.\n"
+        print(("\nThe file %s didn't look like we expected.\n"
                "It may have been moved or tampered with. You should tell me:"
-               " @brainsik." % name)
+               " @brainsik." % name))
         raise SystemExit(1)
 
     downloaded_file = tempfile.NamedTemporaryFile("wb", delete=False)
@@ -125,9 +125,9 @@ def selfupdate(src):
     dst = os.path.join(VENVBURRITO, "bin", "virtualenv-burrito")
     shutil.copyfile(src, dst)
     os.remove(src)
-    os.chmod(dst, 0755)
+    os.chmod(dst, 0o755)
 
-    print "  Restarting!\n"
+    print("  Restarting!\n")
     sys.stdout.flush()
     os.execl(dst, "virtualenv-burrito", "upgrade", "selfupdated")
 
@@ -150,7 +150,7 @@ def upgrade_package(filename, name, version):
     os.environ['PYTHONPATH'] = pythonpath.rstrip(":")
 
     realname = "%s-%s" % (name, version)
-    print "  Installing", realname
+    print("  Installing", realname)
 
     owd = _getcwd()
     tmp = tempfile.mkdtemp(prefix='venvburrito.')
@@ -186,8 +186,8 @@ def upgrade_package(filename, name, version):
 def check_versions(selfcheck=True):
     """Return packages which can be upgraded."""
     try:
-        fp = urllib2.urlopen(VERSIONS_URL)
-    except Exception, e:
+        fp = urllib.request.urlopen(VERSIONS_URL)
+    except Exception as e:
         sys.stderr.write("\nERROR - Couldn't open versions file at %s: %s %s\n"
                          % (VERSIONS_URL, type(e), str(e)))
         raise SystemExit(1)
@@ -204,7 +204,7 @@ def check_versions(selfcheck=True):
             current = get_installed_version(name)
 
         if not current or version != current:
-            print "+ %s will upgrade (%s -> %s)" % (name, current, version)
+            print("+ %s will upgrade (%s -> %s)" % (name, current, version))
             has_update.append((name, version, url, digest))
             if name == NAME:
                 break
@@ -216,7 +216,7 @@ def handle_upgrade(selfupdated=False, firstrun=False):
     """Handles the upgrade command."""
     if os.path.exists(VENVBURRITO_LIB):
         if not os.path.exists(os.path.join(VENVBURRITO, "libexec")):
-            print "! Removing burrito < 2.7 setup and preparing fresh wrap"
+            print("! Removing burrito < 2.7 setup and preparing fresh wrap")
 
             # nuke old lib and get pip out of the bin PATH
             shutil.rmtree(VENVBURRITO_LIB)
@@ -238,10 +238,10 @@ def handle_upgrade(selfupdated=False, firstrun=False):
         filename = download(url, digest)
         try:
             if name == NAME:
-                print "* Upgrading ourself …"
+                print("* Upgrading ourself …")
                 selfupdate(filename)  # calls os.exec
             else:
-                print "* Upgrading %s …" % name
+                print("* Upgrading %s …" % name)
                 upgrade_package(filename, name, version)
         finally:
             if filename and os.path.exists(filename):
@@ -252,19 +252,19 @@ def handle_upgrade(selfupdated=False, firstrun=False):
         drop_startup_sh()
 
     if selfupdated:
-        print "\nTo finish the upgrade, run this:"
-        print "source %s/startup.sh" % VENVBURRITO
+        print("\nTo finish the upgrade, run this:")
+        print("source %s/startup.sh" % VENVBURRITO)
 
     elif not has_update:
-        print "Everything is up to date."
+        print("Everything is up to date.")
         return
 
     else:
-        print "\nFin."
+        print("\nFin.")
 
 
 def usage(returncode=1):
-    print "Use like this:\n\t%s upgrade" % NAME
+    print("Use like this:\n\t%s upgrade" % NAME)
     raise SystemExit(returncode)
 
 
@@ -276,7 +276,7 @@ def main(argv):
         usage(returncode=0)
 
     if argv[1] in ['version', '--version', '-V']:
-        print "virtualenv-burrito %s from %s" % (__version__, __file__)
+        print("virtualenv-burrito %s from %s" % (__version__, __file__))
         raise SystemExit(0)
 
     if argv[1] in ['upgrade', 'update']:
