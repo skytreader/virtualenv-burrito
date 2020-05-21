@@ -6,6 +6,7 @@
 
 __version__ = "2.7.1"
 
+import codecs
 import sys
 import os
 import csv
@@ -31,7 +32,9 @@ except ImportError:  # Python < 2.4
 NAME = os.path.basename(__file__)
 VENVBURRITO = os.path.join(os.environ['HOME'], ".venvburrito")
 VENVBURRITO_LIB = os.path.join(VENVBURRITO, "lib")
-VERSIONS_URL = "https://raw.githubusercontent.com/brainsik/virtualenv-burrito/master/versions.csv"
+REPO_SOURCE = "skytreader"
+BRANCH = "python3-exclusivity"
+VERSIONS_URL = "https://raw.githubusercontent.com/%s/virtualenv-burrito/%s/versions.csv" % (REPO_SOURCE, BRANCH)
 
 
 def get_python_maj_min_str():
@@ -191,7 +194,7 @@ def check_versions(selfcheck=True):
         sys.stderr.write("\nERROR - Couldn't open versions file at %s: %s %s\n"
                          % (VERSIONS_URL, type(e), str(e)))
         raise SystemExit(1)
-    reader = csv.reader(fp)
+    reader = list(csv.reader(codecs.iterdecode(fp, "utf-8")))
 
     has_update = []
     for name, version, url, digest in reader:
