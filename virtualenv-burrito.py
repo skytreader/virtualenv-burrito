@@ -18,10 +18,12 @@ import platform
 
 try:
     import hashlib
-    sha1 = hashlib.sha1
+    sha256 = hashlib.sha256
 except ImportError:  # Python < 2.5
+    # FIXME this is totally broken bec. I don't want to support legacy Python
+    # Maybe throw an error?
     import sha
-    sha1 = sha.new
+    sha256 = sha.new
 
 try:
     import subprocess
@@ -77,7 +79,7 @@ def download(url, digest):
                          % (url, type(e), str(e)))
         raise SystemExit(1)
 
-    filehash = sha1()
+    filehash = sha256()
     filehash.update(download_data)
     if filehash.hexdigest() != digest:
         print(("\nThe file %s didn't look like we expected.\n"
