@@ -184,7 +184,7 @@ def upgrade_package(filename, name, version):
                % (sys.executable, VENVBURRITO, lib_python, libexec))
 
         else:
-            pip = os.path.join(VENVBURRITO, "libexec", "pip")
+            pip = os.path.join(VENVBURRITO, "libexec", "pip3")
             __debug_install("%s install --ignore-installed --prefix='%s' ." % (pip, VENVBURRITO))
     finally:
         os.chdir(owd or VENVBURRITO)
