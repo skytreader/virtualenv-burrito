@@ -143,6 +143,9 @@ def _getcwd():
     except OSError:
         return None
 
+def __debug_install(cmd):
+    print("Running: %s" % cmd)
+    sh(cmd)
 
 def upgrade_package(filename, name, version):
     """Install Python package in tarball `filename`."""
@@ -170,19 +173,19 @@ def upgrade_package(filename, name, version):
 
         if name in ['setuptools', 'distribute']:
             # build and install the egg to avoid patching the system
-            sh("%s setup.py bdist_egg" % sys.executable)
+            __debug_install("%s setup.py bdist_egg" % sys.executable)
             egg = glob.glob(os.path.join(os.getcwd(), "dist", "*egg"))[0]
-            sh("%s setup.py easy_install --exclude-scripts --install-dir %s %s >/dev/null"
+            __debug_install("%s setup.py easy_install --exclude-scripts --install-dir %s %s >/dev/null"
                % (sys.executable, lib_python, egg))
 
         elif name == 'pip':
             libexec = os.path.join(VENVBURRITO, "libexec")
-            sh("%s setup.py install --prefix='' --home='%s' --install-lib %s --install-scripts %s --no-compile >/dev/null"
+            __debug_install("%s setup.py install --prefix='' --home='%s' --install-lib %s --install-scripts %s --no-compile >/dev/null"
                % (sys.executable, VENVBURRITO, lib_python, libexec))
 
         else:
             pip = os.path.join(VENVBURRITO, "libexec", "pip")
-            sh("%s install --ignore-installed --install-option='--prefix=%s' ." % (pip, VENVBURRITO))
+            __debug_install("%s install --ignore-installed --prefix='%s' ." % (pip, VENVBURRITO))
     finally:
         os.chdir(owd or VENVBURRITO)
         shutil.rmtree(tmp)
