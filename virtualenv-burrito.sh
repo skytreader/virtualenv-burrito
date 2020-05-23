@@ -8,7 +8,9 @@ set -e
 
 VENVBURRITO="$HOME/.venvburrito"
 VENVBURRITO_esc="\$HOME/.venvburrito"
-MASTER_URL="https://raw.githubusercontent.com/brainsik/virtualenv-burrito/master"
+REPO_SOURCE="skytreader"
+BRANCH="python3-exclusivity"
+MASTER_URL="https://raw.githubusercontent.com/$REPO_SOURCE/virtualenv-burrito/$BRANCH"
 
 if [ -e "$VENVBURRITO" ]; then
     echo "Found existing $VENVBURRITO"
