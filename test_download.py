@@ -10,9 +10,9 @@ PYPI_JSON_URL = 'https://pypi.org/pypi/%s/json'
 
 PYPI_DOWNLOADS = {
     # filename: md5sum
-    'setuptools-40.8.0.zip': '712697a5bc975cf479d487cd68206c20',
-    'pip-19.0.2.tar.gz': '526fd9ec1e6ea956b3571ebfb42cf83c',
-    'virtualenv-16.4.0.tar.gz': 'd2cc3590a1c759a475b2cadfeee15029',
+    'setuptools-46.4.0.zip': 'e2c6c3d64b38efe2e81bcd502cf54dcc',
+    'pip-20.1.1.tar.gz': '62fa8775c44b070c5e1a3f44b0b6ccc5',
+    'virtualenv-20.0.21.tar.gz': 'd023b58f2ddc0147d1a7cef7ab984c1f',
     'virtualenvwrapper-4.8.4.tar.gz': 'b257b16b593eabd7e809cc76e63c295f',
 }
 
