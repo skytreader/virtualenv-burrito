@@ -247,10 +247,10 @@ def handle_upgrade(selfupdated=False, firstrun=False):
         filename = download(url, digest)
         try:
             if name == NAME:
-                print("* Upgrading ourself …")
+                print("* Upgrading ourself ...")
                 selfupdate(filename)  # calls os.exec
             else:
-                print("* Upgrading %s …" % name)
+                print("* Upgrading %s ..." % name)
                 upgrade_package(filename, name, version)
         finally:
             if filename and os.path.exists(filename):
