@@ -112,6 +112,7 @@ if ! echo $PATH | grep -q "$venvb_bin_path"; then
     export PATH="$venvb_bin_path:$PATH"
 fi
 
+export VIRTUALENVWRAPPER_PYTHON='%s'
 . $HOME/.venvburrito/bin/virtualenvwrapper.sh
 if ! [ -e $HOME/.venvburrito/.firstrun ]; then
     echo
@@ -119,7 +120,7 @@ if ! [ -e $HOME/.venvburrito/.firstrun ]; then
     echo "mkvirtualenv <cool-name>"
     touch $HOME/.venvburrito/.firstrun
 fi
-""" % get_python_maj_min_str()
+""" % (get_python_maj_min_str(), sys.executable)
     startup_sh = open(os.path.join(VENVBURRITO, "startup.sh"), 'w')
     startup_sh.write(script)
     startup_sh.close()
