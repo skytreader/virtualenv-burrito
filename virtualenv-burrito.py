@@ -71,7 +71,7 @@ def download(url, digest):
     Downloads and checks the SHA1 of the data matches the given hex digest.
     """
     name = url.split('/')[-1]
-    print("  Downloading", name, "…")
+    print("  Downloading", name, "...")
     try:
         download_data = urllib.request.urlopen(url).read()
     except Exception as e:
