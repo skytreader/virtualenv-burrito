@@ -35,7 +35,7 @@ NAME = os.path.basename(__file__)
 VENVBURRITO = os.path.join(os.environ['HOME'], ".venvburrito")
 VENVBURRITO_LIB = os.path.join(VENVBURRITO, "lib")
 REPO_SOURCE = "skytreader"
-BRANCH = "python3-exclusivity"
+BRANCH = "master"
 VERSIONS_URL = "https://raw.githubusercontent.com/%s/virtualenv-burrito/%s/versions.csv" % (REPO_SOURCE, BRANCH)
 
 

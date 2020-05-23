@@ -9,7 +9,7 @@ set -e
 VENVBURRITO="$HOME/.venvburrito"
 VENVBURRITO_esc="\$HOME/.venvburrito"
 REPO_SOURCE="skytreader"
-BRANCH="python3-exclusivity"
+BRANCH="master"
 MASTER_URL="https://raw.githubusercontent.com/$REPO_SOURCE/virtualenv-burrito/$BRANCH"
 
 if [ -e "$VENVBURRITO" ]; then
