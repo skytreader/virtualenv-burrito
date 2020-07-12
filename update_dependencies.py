@@ -19,7 +19,7 @@ def out(msg, err=False, nl=True):
         fp = sys.stderr
     else:
         fp = sys.stdout
-    if not isinstance(msg, basestring):
+    if not isinstance(msg, str):
         msg = repr(msg)
     fp.write(msg)
     if nl:
@@ -39,7 +39,7 @@ def shasum(url):
     for b in requests.get(url, stream=True).iter_content(chunk_size=1024 * 50):
         m.update(b)
         out('.', nl=False)
-    digest = unicode(m.hexdigest())
+    digest = str(m.hexdigest())
     out(' %s' % digest)
     return digest
 
@@ -70,7 +70,7 @@ def commit_msg(upgrades):
 
 
 def update_csv(upgrades):
-    names = upgrades.keys()
+    names = list(upgrades.keys())
 
     with open('versions.csv') as fp:
         csv = fp.readlines()
@@ -84,7 +84,7 @@ def update_csv(upgrades):
 
 
 def update_test_download(upgrades):
-    names = upgrades.keys()
+    names = list(upgrades.keys())
 
     with open('test_download.py') as fp:
         py = fp.readlines()
@@ -154,7 +154,7 @@ def get_pkg(pkg, version=None):
 def get_current_versions():
     versions = extract_csv()
     md5sums = extract_test_download()
-    for k, v in md5sums.iteritems():
+    for k, v in md5sums.items():
         assert versions[k]['version'] == v['version']
         versions[k]['md5sum'] = v['md5sum']
     return versions
