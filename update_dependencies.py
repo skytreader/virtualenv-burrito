@@ -4,8 +4,16 @@ import sys
 import re
 import requests
 import os.path
-from hashlib import sha1
 from subprocess import check_call
+
+try:
+    import hashlib
+    sha256 = hashlib.sha256
+except ImportError:  # Python < 2.5
+    # FIXME this is totally broken bec. I don't want to support legacy Python
+    # Maybe throw an error?
+    import sha
+    sha256 = sha.new
 
 pypi_index_url = 'https://pypi.org/pypi/%s/json'
 pypi_version_url = 'https://pypi.org/pypi/%s/%s/json'
@@ -35,7 +43,7 @@ def fetch_json(url):
 
 def shasum(url):
     out('-> getting shasum .', nl=False)
-    m = sha1()
+    m = sha256()
     for b in requests.get(url, stream=True).iter_content(chunk_size=1024 * 50):
         m.update(b)
         out('.', nl=False)
