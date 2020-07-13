@@ -2,8 +2,16 @@
 import os
 import urllib.request, urllib.error, urllib.parse
 import csv
-import hashlib
 import json
+
+try:
+    import hashlib
+    sha256 = hashlib.sha256
+except ImportError:  # Python < 2.5
+    # FIXME this is totally broken bec. I don't want to support legacy Python
+    # Maybe throw an error?
+    import sha
+    sha256 = sha.new
 
 
 PYPI_JSON_URL = 'https://pypi.org/pypi/%s/json'
@@ -40,9 +48,9 @@ def test_shasum():
         for name, version, url, digest in reader:
             if name.startswith('_'):
                 continue
-            sha1 = hashlib.sha1()
-            sha1.update(urllib.request.urlopen(url).read())
-            eq_(digest, sha1.hexdigest())
+            m = sha256()
+            m.update(urllib.request.urlopen(url).read())
+            eq_(digest, m.hexdigest())
 
 
 def test_md5_url_exists():
